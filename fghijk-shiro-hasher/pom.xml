@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.fghijk.maven.poms</groupId>
+        <artifactId>fghijk-rpm-root-pom</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath />
+    </parent>
+
+    <groupId>net.fghijk.rpms</groupId>
+    <artifactId>fghijk-shiro-hasher</artifactId>
+    <version>0.1-1</version>
+    <packaging>rpm</packaging>
+
+    <name>RPM Package for FGHIJK Shiro Hasher</name>
+    <description>A command line hashing tool using Apache Shiro</description>
+
+    <properties>
+        <rpm.version>0.1</rpm.version>
+        <rpm.release>1</rpm.release>
+        <rpm.arch>noarch</rpm.arch>
+    </properties>
+
+    <build>
+        <outputDirectory>${project.build.directory}/rpmbuild</outputDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/rpmbuild</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependency</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.fghijk.rpms</groupId>
+                                    <artifactId>fghijk-shiro-hasher-core</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>jar-with-dependencies</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.outputDirectory}/SOURCES</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.fghijk.maven.plugins</groupId>
+                <artifactId>fghijk-bash-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>rpmbuild</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <script>
+                                rpmbuild -ba --define '_topdir ${project.build.outputDirectory}' \
+                                --define '_name ${project.artifactId}' \
+                                --define '_version ${rpm.version}' \
+                                --define '_release ${rpm.release}' \
+                                --define '_arch ${rpm.arch}' \
+                                ${project.build.outputDirectory}/SPECS/${project.artifactId}.spec
+                            </script>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.fghijk.maven.plugins</groupId>
+                <artifactId>fghijk-rpm-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <outputRpm>${project.build.outputDirectory}/RPMS/${rpm.arch}/${project.build.finalName}.${rpm.arch}.rpm</outputRpm>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>rpms</id>
+            <name>FGHIJK RPM Releases</name>
+            <url>${fghijk.repos.rpms}</url>
+        </repository>
+    </distributionManagement>
+</project>

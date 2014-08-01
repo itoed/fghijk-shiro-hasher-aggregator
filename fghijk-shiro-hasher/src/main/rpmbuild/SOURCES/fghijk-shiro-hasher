@@ -1,0 +1,2 @@
+#!/bin/bash
+java -jar /var/lib/fghijk/shiro-hasher/fghijk-shiro-hasher.jar $@
