@@ -83,7 +83,7 @@
                 <artifactId>fghijk-rpm-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <outputRpm>${project.build.outputDirectory}/RPMS/${rpm.arch}/fghijk-shiro-hasher-${project.version}-${rpm.arch}.rpm</outputRpm>
+                    <outputRpm>${project.build.outputDirectory}/RPMS/${rpm.arch}/fghijk-shiro-hasher-${project.version}.${rpm.arch}.rpm</outputRpm>
                 </configuration>
             </plugin>
         </plugins>
