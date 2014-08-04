@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>net.fghijk.rpms</groupId>
-    <artifactId>fghijk-shiro-hasher</artifactId>
+    <artifactId>fghijk-shiro-hasher-rpm</artifactId>
     <version>0.1-1</version>
     <packaging>rpm</packaging>
 
@@ -68,11 +68,11 @@
                         <configuration>
                             <script>
                                 rpmbuild -ba --define '_topdir ${project.build.outputDirectory}' \
-                                --define '_name ${project.artifactId}' \
+                                --define '_name fghijk-shiro-hasher' \
                                 --define '_version ${rpm.version}' \
                                 --define '_release ${rpm.release}' \
                                 --define '_arch ${rpm.arch}' \
-                                ${project.build.outputDirectory}/SPECS/${project.artifactId}.spec
+                                ${project.build.outputDirectory}/SPECS/fghijk-shiro-hasher.spec
                             </script>
                         </configuration>
                     </execution>
@@ -83,7 +83,7 @@
                 <artifactId>fghijk-rpm-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <outputRpm>${project.build.outputDirectory}/RPMS/${rpm.arch}/${project.build.finalName}.${rpm.arch}.rpm</outputRpm>
+                    <outputRpm>${project.build.outputDirectory}/RPMS/${rpm.arch}/fghijk-shiro-hasher-${project.version}-${rpm.arch}.rpm</outputRpm>
                 </configuration>
             </plugin>
         </plugins>
